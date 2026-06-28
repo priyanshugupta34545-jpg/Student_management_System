@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="page-shell">
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Java + Spring Boot + MySQL</p>
+            <h1>Student Management System</h1>
+            <p class="subtitle">Manage student records with a clean HTML, CSS and JavaScript interface.</p>
+        </div>
+        <a class="primary-btn" th:href="@{/students/new}">+ Add Student</a>
+    </header>
+    <section class="toolbar card">
+        <form th:action="@{/students}" method="get" class="search-form">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Search by name or course">
+            <button type="submit" class="secondary-btn">Search</button>
+            <a th:href="@{/students}" class="link-btn">Reset</a>
+        </form>
+    </section>
+    <div th:if="${successMessage}" class="alert success" th:text="${successMessage}"></div>
+    <section class="card table-card">
+        <div class="table-header">
+            <h2>Student Records</h2>
+            <span th:text="${#lists.size(students)} + ' students'"></span>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>Phone</th><th>City</th><th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(students)}"><td colspan="7" class="empty-state">No students found.</td></tr>
+                <tr th:each="student : ${students}">
+                    <td th:text="${student.id}"></td>
+                    <td th:text="${student.firstName + ' ' + student.lastName}"></td>
+                    <td th:text="${student.email}"></td>
+                    <td th:text="${student.course}"></td>
+                    <td th:text="${student.phone}"></td>
+                    <td th:text="${student.city}"></td>
+                    <td><div class="action-group"><a class="table-btn edit" th:href="@{'/students/edit/' + ${student.id}}">Edit</a><a class="table-btn delete delete-link" th:href="@{'/students/delete/' + ${student.id}}">Delete</a></div></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>
